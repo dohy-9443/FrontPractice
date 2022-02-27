@@ -1,17 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 const MainBody = () => {
 
   // useState
   const [isVal, setIsVal] = useState('');
-  const [isBtn, setIsBtn] = useState(false);
+  const [isBtn, setIsBtn] = useState(true);
+  const [alertText, setAlertText] = useState('');
 
   // useEffect
+  useEffect(() => { }, [isVal])
 
+  // useHistory
+  const history = useHistory();
 
   // function
-  // const input
+  const nameValidation = () => {
+    let checkName = /[^가-힣a-zA-Z]/g
+
+    if (isVal === '') {
+      setAlertText('이름을 입력해주세요.')
+    } else if (checkName.test(isVal)) {
+      setAlertText('한글과 영문만 입력 가능합니다.')
+    } else if (isVal.length === 1) {
+      setAlertText('두글자 이상 입력해주세요.')
+    } else {
+      setAlertText('성공')
+      history.push({pathname: '/main', name: isVal})
+    }
+  }
 
   return (
     <Container>
@@ -22,11 +40,11 @@ const MainBody = () => {
           <InputBox>
             <Input type="text" onChange={(e) => {setIsVal(e.target.value)}} value={isVal} placeholder="이름을 입력해 주세요." />
             {
-              isBtn && 
-              <P>올바른 이름 형식이 아닙니다!</P>
+              isBtn &&
+              <P>{alertText}</P>
             }
           </InputBox>
-          <InputBtn>Enter</InputBtn>
+          <InputBtn onClick={() => {nameValidation()}}>Enter</InputBtn>
         </DIV>
       </Wrap>
     </Container>
@@ -69,7 +87,7 @@ const InputBox = styled.div`
 const Input = styled.input`
   width: 450px; height: 45px;
   outline: none;
-  border-radius: 15px; border: 1px solid #FFF;
+  border-radius: 20px; border: 1px solid #FFF;
   padding: 0 10px;
   background: transparent;
   color: #fff; text-align: center; font-size: 16px; font-weight: bold;
@@ -83,7 +101,7 @@ const P = styled.p`
 const InputBtn = styled.div`
   width: 470px; height: 45px;
   background: linear-gradient(135deg, gray, black);
-  border-radius: 15px; border: 1px solid #FFF;
+  border-radius: 20px; border: 1px solid #FFF;
   display: flex; justify-content: center; align-items: center;
   font-size: 18px; font-weight: 400; color: #FFF;
   margin-bottom: 20px;
