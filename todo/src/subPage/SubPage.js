@@ -5,23 +5,62 @@ import { useHistory, useParams, useLocation } from 'react-router-dom';
 const SubPage = () => {
 
   const location = useLocation()
+  const history = useHistory()
 
   const [isName, setIsName] = useState('');
 
-  sessionStorage.setItem("name", location.name);
+  const resName = history.location.state;
+  // 넘어온 데이터를 상수에 담기
 
+  localStorage.setItem('id', JSON.stringify(resName));
+  // 상수를 localStorage id에 담기 
 
   useEffect(() => {
-    setIsName(sessionStorage.getItem("name"))
-  }, [])
+
+    const saveName = localStorage.getItem('id');
+    // localStorage에 담긴 데이터를 불러옴
+
+    if (saveName !== null) {
+      setIsName(saveName.substring(1, saveName.length-1))
+      // 그게 null 값이 아니면 state에 담음
+    }
+    
+  }, [resName])
 
   return (
     <Container>
-      <h2>이름 : {isName}</h2>
+      <Wrap>
+        <P><span>{isName}</span>님 환영합니다.</P>
+        <Center>
+
+        </Center>
+      </Wrap>
     </Container>
   );
 };
 
 export default SubPage;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
+
+const Wrap = styled.div`
+  /* width: 100%; */
+  padding: 20px;
+`;
+
+const P = styled.p`
+  display: flex; justify-content: flex-end; align-items: center;
+  font-size: 20px; color: #555; font-weight: bold;
+  width: 100%;
+
+  & span {
+    font-size: 25px; font-weight: bold; color: #333;
+  }
+`;
+
+const Center = styled.div`
+  width: 100%; height: 500px;
+  background-color: red;
+`;
