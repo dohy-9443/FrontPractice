@@ -27,7 +27,14 @@ const MainBody = () => {
       setAlertText('두글자 이상 입력해주세요.')
     } else {
       setAlertText('성공')
-      history.push({pathname: '/main', name: isVal})
+      history.push({pathname: '/main', state: isVal})
+    }
+  }
+
+  // Enter 처리
+  const enterEvent = (e) => {
+    if (e.code === 'Enter') {
+      nameValidation()
     }
   }
 
@@ -38,7 +45,7 @@ const MainBody = () => {
 
         <DIV>
           <InputBox>
-            <Input type="text" onChange={(e) => {setIsVal(e.target.value)}} value={isVal} placeholder="이름을 입력해 주세요." />
+            <Input type="text" onKeyPress={enterEvent} onChange={(e) => {setIsVal(e.target.value)}} value={isVal} placeholder="이름을 입력해 주세요." />
             {
               isBtn &&
               <P>{alertText}</P>
