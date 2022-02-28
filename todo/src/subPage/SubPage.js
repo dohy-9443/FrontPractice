@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 
+import SubBody from './component/SubBody'
+
 const SubPage = () => {
 
   const location = useLocation()
@@ -31,9 +33,8 @@ const SubPage = () => {
     <Container>
       <Wrap>
         <P><span>{isName}</span>님 환영합니다.</P>
-        <Center>
-
-        </Center>
+        
+        <SubBody />
       </Wrap>
     </Container>
   );
@@ -58,9 +59,4 @@ const P = styled.p`
   & span {
     font-size: 25px; font-weight: bold; color: #333;
   }
-`;
-
-const Center = styled.div`
-  width: 100%; height: 500px;
-  background-color: red;
 `;
