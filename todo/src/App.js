@@ -12,7 +12,7 @@ const App = () => {
     <>
       <Reset />
       <Router>
-        <Route exact path="/main" component={MainPage} />
+        <Route exact path="/" component={MainPage} />
         <Route exact path="/sub" component={SubPage} />
       </Router>
     </>
