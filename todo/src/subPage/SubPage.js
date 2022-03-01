@@ -53,10 +53,10 @@ const Wrap = styled.div`
 
 const P = styled.p`
   display: flex; justify-content: flex-end; align-items: center;
-  font-size: 20px; color: #555; font-weight: bold;
+  font-size: 20px; color: #5182E2; font-weight: bold;
   width: 100%;
 
   & span {
-    font-size: 25px; font-weight: bold; color: #333;
+    font-size: 25px; font-weight: bold; color: #363F8F;
   }
 `;

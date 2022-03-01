@@ -4,15 +4,29 @@ import styled from 'styled-components';
 const SubBody = () => {
 
   const [isHeight, setIsHeight] = useState(0);
+  const [isTextVal, setIsTextVal] = useState('');
 
   const heightEl = useRef(null)
   const divEl = useRef(null)
+
+  // localStorage
+  localStorage.setItem('textArea', isTextVal);
 
   useEffect(() => {
     let divHeight = divEl.current.clientHeight;
     let topHeight = heightEl.current.offsetTop
     setIsHeight(divHeight - topHeight)
   }, [])
+
+  useEffect(() => {
+    const saveName = localStorage.getItem('textArea');
+    // localStorage에 담긴 데이터를 불러옴
+
+    if (saveName !== null) {
+      setIsTextVal(saveName)
+      // 그게 null 값이 아니면 state에 담음
+    }
+  }, [isTextVal])
 
   return (
     <Container>
@@ -36,7 +50,7 @@ const SubBody = () => {
         </Left>
 
         <Right>
-          <TextArea placeholder='업무일지를 작성해 주세요.' />
+          <TextArea placeholder='업무일지를 작성해 주세요.' value={isTextVal} onChange={(e) => {setIsTextVal(e.target.value)}} />
         </Right>
       </Wrap>
     </Container>
@@ -67,12 +81,13 @@ const Right = styled.div`
 
 const TextArea = styled.textarea`
   width: 100%; height: 500px;
-  border: 2px solid gray; box-sizing: border-box; border-radius: 10px;
+  border: 2px solid #5182E2; box-sizing: border-box; border-radius: 10px;
   padding: 20px;
-  font-size: 20px; font-weight: bold; color: #000;
+  font-size: 20px; font-weight: bold; color: #363F8F;
+  outline: none;
   resize: none;
   &::placeholder {
-    color: gray;
+    color: #B2CCFF;
   }
 
   &::-webkit-scrollbar { display: none; }
@@ -118,6 +133,10 @@ const Input = styled.input`
 
 `;
 
+// 5182E2
+// 2px 4px 3px rgba(0,0,0,0.09)
+// B2CCFF
+
 const Btn = styled.div`
   width: 20%; height: 50px;
   margin-left: 10px;
@@ -136,7 +155,7 @@ const Cover = styled.div`
 `;
 
 const Ul = styled.ul`
-   height: 1000px;
+  height: 1000px;
   background: blue;
 `;
 
