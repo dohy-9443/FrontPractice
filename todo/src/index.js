@@ -5,7 +5,7 @@ import App from './App';
 import firebase from './firebase'
 import reportWebVitals from './reportWebVitals';
 
-console.log(firebase)
+// console.log(firebase)
 
 ReactDOM.render(
   <React.StrictMode>

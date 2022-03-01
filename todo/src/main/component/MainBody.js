@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { push, ref, limitToLast, onValue, orederByChild, query, remove } from '@firebase/database';
+
 
 const MainBody = () => {
 
