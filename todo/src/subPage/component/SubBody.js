@@ -7,17 +7,19 @@ import noneCheckSVG from '../../img/noneCheck.svg';
 
 const SubBody = () => {
 
+  // useState
   const [isHeight, setIsHeight] = useState(0);
   const [isTextVal, setIsTextVal] = useState('');
   const [listData, setListData] = useState([]);
   const [isInputVal, setIsInputVal] = useState('');
+  const [todoList, setTodoList] = useState([]);  
 
+  // useRef
   const heightEl = useRef(null)
   const divEl = useRef(null)
+  const nextId = useRef(0)
 
-  // localStorage
-  localStorage.setItem('textArea', isTextVal);
-
+  // useEffect
   useEffect(() => {
     let divHeight = divEl.current.clientHeight;
     let topHeight = heightEl.current.offsetTop
@@ -25,25 +27,23 @@ const SubBody = () => {
   }, [])
 
   useEffect(() => {
-    const saveName = localStorage.getItem('textArea');
-    // localStorage에 담긴 데이터를 불러옴
-
-    if (saveName !== null) {
-      setIsTextVal(saveName)
-      // 그게 null 값이 아니면 state에 담음
-    }
-  }, [isTextVal])
+    heightEl.current.scrollTop = heightEl.current.scrollHeight;
+  }, [listData])
 
   useEffect(() => {
-    setListData([
-      { id: 1, text: '세상모르게 잠자기', isCheck: false },
-      { id: 2, text: '멋드러지게 밥먹기', isCheck: true },
-      { id: 3, text: '끝장내버리게 숨쉬기', isCheck: false },
-    ])
+    
   }, [])
 
+  // function
   const insertInput = (e) => {
-    setIsInputVal(e.target.value)
+    const todo = {
+      id: nextId.current,
+      text: isInputVal,
+      isCheck: false
+    };
+    setIsInputVal('')
+    setListData(listData.concat(todo));
+    nextId.current += 1
   }
 
   const insertEnter = (e) => {
@@ -52,6 +52,17 @@ const SubBody = () => {
     }
   }
 
+  const doubleClick = (id) => {
+    const delList = listData.filter((item) => {
+        if (item.id !== id) {
+          return item;
+        }
+    });
+
+    setListData(delList)
+  }
+
+  
   return (
     <Container>
       <Wrap>
@@ -64,12 +75,13 @@ const SubBody = () => {
               <InputBox>
                 <Input 
                   type='text' 
-                  placeholder='할 일을 입력해주세요.' 
-                  onChange={insertInput}
+                  placeholder='할 일을 입력해주세요. 더블클릭하면 지워져요.' 
+                  value={isInputVal}
+                  onChange={(e) => {setIsInputVal(e.target.value)}}
                   onKeyPress={insertEnter}
                   autoFocus 
                 />
-                <Btn onClick={() => {insertEnter()}}><img src={plusSVG} alt="" /></Btn>
+                <Btn onClick={() => {insertInput()}}><img src={plusSVG} alt="" /></Btn>
               </InputBox>
               <Cover ref={heightEl} height={isHeight}>
                 <Ul>
@@ -85,14 +97,30 @@ const SubBody = () => {
                                 <CheckIpt 
                                   type="checkbox" 
                                   id={'check' + id}
-                                  checked={isCheck}
+                                  // checked={isCheck}
                                   onChange={(e) => {
-                                    listData[index].checked = e.target.checked
+                                    let copyData = [...listData];
+                                    let nowText = isTextVal
+                                    let now = `\n${copyData[index].text}`;
+                                    let prev = copyData[index].text
+                                    copyData[index].isCheck = e.target.checked;
+                                    if (copyData[index].isCheck) {
+
+                                      nowText += now.replace(<br/>, /\n/g)
+                                      
+                                      setIsTextVal(nowText)
+                                      
+                                    } else {
+                                      
+                                      let result = nowText.replace(now, '')
+                                      setIsTextVal(result)
+                                    }
+                                    setListData(copyData)
                                   }} />
                                 <CheckLabel htmlFor={'check' + id}></CheckLabel>
                               </InputDIV>
                             </CheckBoxCover>
-                            <Text isChecked={isCheck} >{text}</Text>
+                            <Text isChecked={isCheck} onDoubleClick={() => {doubleClick(id)}} >{text}</Text>
                           </FlexDiv>
                         </Li>
                       )
@@ -106,7 +134,7 @@ const SubBody = () => {
         </Left>
 
         <Right>
-          <TextArea placeholder='업무일지를 작성해 주세요.' value={isTextVal} onChange={(e) => {setIsTextVal(e.target.value)}} />
+          <TextArea placeholder='업무일지를 작성해 주세요. 근데 옆에 할일이랑 똑같이 적히면 앞에꺼부터 지워져요..ㅠㅠ 그건 조심해 주세요..ㅠㅠ' value={isTextVal} onChange={(e) => {setIsTextVal(e.target.value)}} />
         </Right>
       </Wrap>
     </Container>
@@ -118,21 +146,47 @@ export default SubBody;
 const Container = styled.div`
   margin: 50px auto 0;
   width: 1134px;
+
+  @media screen and (max-width: 1200px) {
+    width: 980px;
+  }
+
+  @media screen and (max-width: 1050px) {
+    width: 768px;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const Wrap = styled.div`
   width: 100%;
   display: flex; justify-content: space-around; align-items: center;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const Left = styled.div`
   width: 50%; 
   padding: 0 10px 0 20px; 
+
+  @media screen and (max-width: 800px) {
+    width: 90%;
+    padding: 0; margin-bottom: 30px;
+  }
 `;
 
 const Right = styled.div`
   width: 50%;
   padding: 0 20px 0 10px;
+
+  @media screen and (max-width: 800px) {
+    width: 90%;
+    padding: 0;
+  }
 `;
 
 const TextArea = styled.textarea`
@@ -177,7 +231,7 @@ const TodoBody = styled.div`
 
 const InputBox = styled.div`
   width: 100%; height: 50px;
-  padding-top: 20px;
+  padding-top: 20px; margin-bottom: 20px;
   display: flex; justify-content: center; align-items: center;
 `;
 
@@ -211,7 +265,7 @@ const Btn = styled.div`
 `;
 
 const Cover = styled.div`
-  height: ${props => props.height + 'px'};
+  height: ${props => props.height + 40 + 'px'};
   overflow: auto;
   padding: 20px;
 
@@ -219,7 +273,7 @@ const Cover = styled.div`
 `;
 
 const Ul = styled.ul`
-  height: 1000px;
+  /* height: 1000px; */
   /* background: blue; */
 `;
 
@@ -272,5 +326,6 @@ const CheckIpt = styled.input`
 
 
 const Text = styled.p`
+  font-size: 18px; font-weight: 400; color: #5182E2;
   text-decoration: ${props => props.isChecked ? 'line-through' : 'none'};
 `;
