@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/FrontPractice/static/css/main.e6c13ad2.css",
+    "main.js": "/FrontPractice/static/js/main.5bef5dab.js",
+    "static/js/787.63e47474.chunk.js": "/FrontPractice/static/js/787.63e47474.chunk.js",
+    "static/media/plus.svg": "/FrontPractice/static/media/plus.589ee821d83c48d26ecb2cdc153e0707.svg",
+    "index.html": "/FrontPractice/index.html",
+    "static/media/noneCheck.svg": "/FrontPractice/static/media/noneCheck.c83fa949dc408b4f38885df305fd908d.svg",
+    "static/media/check.svg": "/FrontPractice/static/media/check.0d73c1e452000fd0db4ea0346368240e.svg",
+    "main.e6c13ad2.css.map": "/FrontPractice/static/css/main.e6c13ad2.css.map",
+    "main.5bef5dab.js.map": "/FrontPractice/static/js/main.5bef5dab.js.map",
+    "787.63e47474.chunk.js.map": "/FrontPractice/static/js/787.63e47474.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.5bef5dab.js"
+  ]
+}
