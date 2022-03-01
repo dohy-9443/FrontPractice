@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "postbuild": "cp build/index.html build/404.html",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
